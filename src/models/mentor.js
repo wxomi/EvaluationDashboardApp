@@ -9,20 +9,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.hasMany(models.Student, {
+        foreignKey: "mentorId",
+      });
     }
   }
   Mentor.init(
     {
       name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-      },
-      password: {
         type: DataTypes.STRING,
         allowNull: false,
       },
