@@ -1,8 +1,9 @@
 const express = require("express");
 const { PORT } = require("./config/serverConfig");
 const Api = require("./routes/index");
+const generateMarksheet = require("./utils/generateMarksheet");
 
-const setupAndStartServer = () => {
+const setupAndStartServer = async () => {
   const app = express();
 
   app.use(express.json());
