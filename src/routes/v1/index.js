@@ -27,5 +27,6 @@ router.patch(
 );
 
 router.get("/mentor/:mentorId/students/:filter", studentController.getStudent);
+router.get("/mentor/:mentorId/students", studentController.getAllStudets);
 
 module.exports = router;

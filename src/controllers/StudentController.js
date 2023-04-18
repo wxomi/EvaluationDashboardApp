@@ -71,8 +71,32 @@ const getStudent = async (req, res) => {
     });
   }
 };
+
+const getAllStudets = async (req, res) => {
+  try {
+    const mentorId = req.params.mentorId;
+    const response = await studentService.getAllStudents(mentorId);
+    return res.status(StatusCodes.OK).json({
+      success: true,
+      message: "Successfully fetched all students",
+      data: response,
+    });
+  } catch (error) {
+    if (error.name == "InternalServerError") {
+      return res.status(error.statusCode).json({
+        error: error.message,
+        message: error.explanation,
+      });
+    }
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      error: error,
+      success: false,
+    });
+  }
+};
 module.exports = {
   addStudent,
   removeStudent,
   getStudent,
+  getAllStudets,
 };

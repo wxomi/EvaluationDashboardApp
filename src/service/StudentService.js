@@ -1,5 +1,6 @@
+const { StatusCodes } = require("http-status-codes");
 const { Mentor, Student, Score } = require("../models/index");
-const { ClientError } = require("../utils/errors");
+const { ClientError, AppError } = require("../utils/errors");
 
 const addStudentToMentor = async (mentorId, studentId) => {
   const mentor = await Mentor.findByPk(mentorId, {
@@ -98,8 +99,24 @@ const getStudents = async (mentorId, filter) => {
   return students;
 };
 
+const getAllStudents = async (mentorId) => {
+  try {
+    const mentor = await Mentor.findByPk(mentorId, { include: [Student] });
+    const students = await mentor.getStudents();
+    return students;
+  } catch (error) {
+    throw new AppError(
+      "InternalServerError",
+      "Server Error",
+      "There was a problem with the server",
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+};
+
 module.exports = {
   addStudentToMentor,
   removeStudent,
   getStudents,
+  getAllStudents,
 };
