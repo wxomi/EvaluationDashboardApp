@@ -49,7 +49,30 @@ const removeStudent = async (req, res) => {
     });
   }
 };
+const getStudent = async (req, res) => {
+  const mentorId = req.params.mentorId;
+  const filter = req.params.filter;
+  try {
+    const response = await studentService.getStudents(mentorId, filter);
+    return res.status(200).json({
+      message: `Successfully fetched all the ${filter} students`,
+      data: response,
+    });
+  } catch (error) {
+    if (error.name == "ClientError") {
+      return res.status(error.statusCode).json({
+        error: error.message,
+        message: error.explanation,
+      });
+    }
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      error: error,
+      success: false,
+    });
+  }
+};
 module.exports = {
   addStudent,
   removeStudent,
+  getStudent,
 };

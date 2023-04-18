@@ -1,6 +1,5 @@
 const { StatusCodes } = require("http-status-codes");
 const { Mentor, Student } = require("../models/index");
-const { ClientError } = require("../utils/errors");
 
 const checkMentorAndStudentExistence = async (req, res, next) => {
   const mentorId = req.params.mentorId;
@@ -26,3 +25,5 @@ const checkMentorAndStudentExistence = async (req, res, next) => {
   }
   next();
 };
+
+module.exports = checkMentorAndStudentExistence;
