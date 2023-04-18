@@ -1,5 +1,5 @@
 const express = require("express");
-const { scoreController, studentController } = require("../../controllers/");
+const { scoreController, studentController } = require("../../controllers");
 const checkMentorAndStudentExistence = require("../../middlewares/checkMentorAndStudentExistence");
 const generateMarksheet = require("../../utils/generateMarksheet");
 

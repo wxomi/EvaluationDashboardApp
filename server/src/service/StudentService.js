@@ -94,7 +94,6 @@ const getStudents = async (mentorId, filter) => {
     students = await mentor.getStudents({
       include: [{ model: Score }],
     });
-    console.log(students);
   }
 
   return students;
