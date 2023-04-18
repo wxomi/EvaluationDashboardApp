@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
     /**
      * Add seed commands here.
      *
@@ -11,15 +11,94 @@ module.exports = {
      *   name: 'John Doe',
      *   isBetaMember: false
      * }], {});
-    */
+     */
+    queryInterface.bulkInsert("Students", [
+      {
+        name: "Anshul",
+        email: "sainianshul4987@gmail.com",
+        password: "anshul@123",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: "Sneha",
+        email: "sneha@gmail.com",
+        password: "anshul@123",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: "Shakshi",
+        email: "shakshi@gmail.com",
+        password: "anshul@123",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: "Somansh",
+        email: "somansh@gmail.com",
+        password: "anshul@123",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: "Gurparas",
+        email: "gurparas@gmail.com",
+        password: "anshul@123",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: "Anubhav",
+        email: "anubhav@gmail.com",
+        password: "anshul@123",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: "Gaurav",
+        email: "gaurav@gmail.com",
+        password: "anshul@123",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: "Ujjwal",
+        email: "ujjwal@gmail.com",
+        password: "anshul@123",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: "Bhoomika",
+        email: "bhoomika@gmail.com",
+        password: "anshul@123",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: "Bhavya",
+        email: "bhavya@gmail.com",
+        password: "anshul@123",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: "Ayushee",
+        email: "ayushee@gmail.com",
+        password: "anshul@123",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ]);
   },
 
-  async down (queryInterface, Sequelize) {
+  async down(queryInterface, Sequelize) {
     /**
      * Add commands to revert seed here.
      *
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-  }
+  },
 };
