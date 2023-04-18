@@ -28,7 +28,7 @@ router.patch(
 );
 
 router.get("/mentor/:mentorId/students/:filter", studentController.getStudent);
-router.get("/mentor/:mentorId/students", studentController.getAllStudets);
 router.get("/mentor/:mentorId/pdf", generateMarksheet);
+router.post("/mentor/:mentorId/lock", scoreController.finalSubmit);
 
 module.exports = router;

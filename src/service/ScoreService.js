@@ -23,7 +23,7 @@ const addScoreToStudent = async (mentorId, studentId, data) => {
     });
   }
 
-  const { ideationScore, executionScore, vivaPatchScore, submitted } = data;
+  const { ideationScore, executionScore, vivaPatchScore } = data;
   const total =
     Number(ideationScore) + Number(executionScore) + Number(vivaPatchScore);
 
@@ -32,7 +32,7 @@ const addScoreToStudent = async (mentorId, studentId, data) => {
     ExecutionScore: executionScore,
     VivaPatchScore: vivaPatchScore,
     total: total,
-    Submitted: submitted,
+    Submitted: true,
   });
 
   await student.setScore(score);
@@ -45,6 +45,13 @@ const editScore = async (mentorId, studentId, newScore) => {
     throw new ClientError({
       message: "Mentor does not exist",
       explanation: "Mentor not found for the given mentorId",
+    });
+  }
+
+  if (mentor.finalSubmit) {
+    throw new ClientError({
+      message: "Score is locked",
+      explanation: "Score is already locked and you can not edit the score now",
     });
   }
 
@@ -73,12 +80,7 @@ const editScore = async (mentorId, studentId, newScore) => {
   }
 
   // Check if the score has already been submitted
-  if (score.Submitted === true) {
-    throw new ClientError({
-      message: "Score already submitted",
-      explanation: "The score has already been submitted and cannot be edited",
-    });
-  }
+
   const total =
     (Number(newScore.ideationScore) || score.IdeationScore) +
     (Number(newScore.executionScore) || score.ExecutionScore) +
@@ -96,7 +98,30 @@ const editScore = async (mentorId, studentId, newScore) => {
   return score;
 };
 
+const finalSubmit = async (mentorId) => {
+  const mentor = await Mentor.findOne({
+    where: { id: mentorId },
+    include: Student,
+  });
+  if (!mentor) {
+    throw new ClientError({
+      message: "Mentor does not exist",
+      explanation: "Mentor not found for the given mentorId",
+    });
+  }
+  if (mentor.Students.length < 3) {
+    throw new ClientError({
+      message: "Assigned Students are less than 3",
+      explanation:
+        "Mentor can not lock the marks assigning marks to atleast 3 students",
+    });
+  }
+  mentor.finalSubmit = true;
+  await mentor.save();
+};
+
 module.exports = {
   addScoreToStudent,
   editScore,
+  finalSubmit,
 };

@@ -94,29 +94,14 @@ const getStudents = async (mentorId, filter) => {
     students = await mentor.getStudents({
       include: [{ model: Score }],
     });
+    console.log(students);
   }
 
   return students;
-};
-
-const getAllStudents = async (mentorId) => {
-  try {
-    const mentor = await Mentor.findByPk(mentorId, { include: [Student] });
-    const students = await mentor.getStudents();
-    return students;
-  } catch (error) {
-    throw new AppError(
-      "InternalServerError",
-      "Server Error",
-      "There was a problem with the server",
-      StatusCodes.INTERNAL_SERVER_ERROR
-    );
-  }
 };
 
 module.exports = {
   addStudentToMentor,
   removeStudent,
   getStudents,
-  getAllStudents,
 };

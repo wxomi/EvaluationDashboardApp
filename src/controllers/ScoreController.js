@@ -54,7 +54,31 @@ const editScore = async (req, res) => {
   }
 };
 
+const finalSubmit = async (req, res) => {
+  try {
+    const mentorId = req.params.mentorId;
+    await scoreService.finalSubmit(mentorId);
+    return res.status(StatusCodes.OK).json({
+      message: "Successfully locked all socres of student",
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+    if (error.name == "ClientError") {
+      return res.status(error.statusCode).json({
+        error: error.message,
+        message: error.explanation,
+      });
+    }
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      error: error,
+      success: false,
+    });
+  }
+};
+
 module.exports = {
   addScore,
+  finalSubmit,
   editScore,
 };
