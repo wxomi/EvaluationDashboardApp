@@ -20,7 +20,7 @@ function App() {
       .then((response) => {
         setAllStudents(response.data.data);
       });
-  });
+  }, []);
 
   return (
     <BrowserRouter>

@@ -3,7 +3,9 @@ import EditMarksModal from "./EditMarksModal";
 import axios from "axios";
 
 const AssignedStudents = (props) => {
-  const updateComponent = () => {
+  const [state, updateState] = useState(0);
+  useEffect(() => {
+    props.setSelected("ass");
     axios
       .get(`http://localhost:3001/api/v1/mentor/${props.mentor}/students/all`)
       .then((response) => {
@@ -13,17 +15,20 @@ const AssignedStudents = (props) => {
           })
         );
       });
-  };
+  }, [state]);
 
-  useEffect(() => {
-    props.setSelected("ass");
-    updateComponent();
-  }, []);
+  function changeState() {
+    updateState((old) => {
+      return old + 1;
+    });
+  }
 
-  function lockAll(){
-    axios.post(`http://localhost:3001/api/v1/mentor/${props.mentor}/lock`).then((response)=>{
-
-    })
+  async function lockAll() {
+    await axios
+      .post(`http://localhost:3001/api/v1/mentor/${props.mentor}/lock`)
+      .catch((err) => {
+        alert(err.response.data.message);
+      });
   }
 
   const [assignedStudents, setAssignedStudents] = useState([]);
@@ -38,10 +43,10 @@ const AssignedStudents = (props) => {
   const closeModal = () => {
     setModalOpened(false);
   };
-  // console.log(assignedStudents);
 
-  const studentCards = assignedStudents.map((item) => {
-    console.log(item);
+  let data = assignedStudents;
+
+  const studentCards = data.map((item) => {
     return (
       <>
         <div
@@ -51,7 +56,9 @@ const AssignedStudents = (props) => {
             setCurrentStudent({ studdentId: item.id, mentorId: item.mentorId });
           }}
         >
-          <div className="card-top">{item.name} {item.id}</div>
+          <div className="card-top">
+            {item.name} {item.id}
+          </div>
           <div className="card-bottom">
             <div>IdeationScore: {item.Score.IdeationScore}</div>
             <div>ExecutionScore: {item.Score.ExecutionScore}</div>
@@ -70,12 +77,14 @@ const AssignedStudents = (props) => {
           closeModal={closeModal}
           studentId={currentStudent.studdentId}
           mentorId={currentStudent.mentorId}
-          updateComponent={updateComponent}
-          post = {false}
+          updateComponent={changeState}
+          post={false}
         />
       )}
       {studentCards}
-      <button className="mentor-sel-button submit-all" onClick={lockAll}>Submit All</button>
+      <button className="mentor-sel-button submit-all" onClick={lockAll}>
+        Submit All
+      </button>
     </div>
   );
 };

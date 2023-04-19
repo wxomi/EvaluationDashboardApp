@@ -16,10 +16,12 @@ const StudentAssign = (props) => {
         `http://localhost:3001/api/v1/mentor/${props.mentor}/student/${inputData}`
       )
       .catch((err) => {
-        console.log(err.response.error);
+
+        alert(err.response.data.message);
+
       });
-      console.log("here")
-      setInputData(null);
+
+      // setInputData(null);
   }
 
   async function unassign() {
@@ -28,16 +30,11 @@ const StudentAssign = (props) => {
         `http://localhost:3001/api/v1/mentor/${props.mentor}/student/${inputData}`
       )
       .catch((err) => {
-        console.log(err.response.error);
+        console.log(err.data)
+        alert(err.response.data.message);
       });
-      console.log("here")
 
-      setInputData(null);
-  }
-
-  function getStudents(){
-    console.log("component Mount")
-    return(<AllStudents setSelected={props.setSelected} mentor={props.mentor} inputData={inputData} allStudents = {props.allStudents} setAllStudents = {props.setAllStudents}/> )
+      // setInputData(null);
   }
 
   return (
@@ -46,7 +43,7 @@ const StudentAssign = (props) => {
         <h1 style={{
           margin: "30px"
         }}>Assigned Students</h1>
-        {getStudents()}
+        <AllStudents setSelected={props.setSelected} mentor={props.mentor} inputData={inputData} allStudents = {props.allStudents} setAllStudents = {props.setAllStudents}/>
         
       </div>
       <div className="right">

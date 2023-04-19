@@ -3,7 +3,9 @@ import EditMarksModal from "./EditMarksModal";
 import axios from "axios";
 
 const UnassignedStudents = (props) => {
-  const updateComponent = () => {
+  const [state, updateState] = useState(0);
+  useEffect(() => {
+    props.setSelected("uns");
     axios
       .get(`http://localhost:3001/api/v1/mentor/${props.mentor}/students/all`)
       .then((response) => {
@@ -13,12 +15,13 @@ const UnassignedStudents = (props) => {
           })
         );
       });
-  };
+  }, [state]);
 
-  useEffect(() => {
-    props.setSelected("uns");
-    updateComponent();
-  }, []);
+  function changeState() {
+    updateState((old) => {
+      return old + 1;
+    });
+  }
 
   const [unassignedStudents, setUnssignedStudents] = useState([]);
   const [currentStudent, setCurrentStudent] = useState({
@@ -33,8 +36,10 @@ const UnassignedStudents = (props) => {
   };
   // console.log(assignedStudents);
 
-  const studentCards = unassignedStudents.map((item) => {
-    console.log(item);
+  let data = unassignedStudents
+
+
+  const studentCards = data.map((item) => {
     return (
       <>
         <div
@@ -60,7 +65,7 @@ const UnassignedStudents = (props) => {
           closeModal={closeModal}
           studentId={currentStudent.studdentId}
           mentorId={currentStudent.mentorId}
-          updateComponent={updateComponent}
+          updateComponent={changeState}
           post = {true}
         />
       )}
