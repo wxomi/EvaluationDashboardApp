@@ -82,7 +82,7 @@ const getStudents = async (mentorId, filter) => {
   }
 
   let students;
-  if (filter === "assigned") {
+  /*if (filter === "assigned") {
     students = await mentor.getStudents({
       include: [{ model: Score, where: { Submitted: true } }],
     });
@@ -90,7 +90,7 @@ const getStudents = async (mentorId, filter) => {
     students = await mentor.getStudents({
       include: [{ model: Score, where: { Submitted: false } }],
     });
-  } else {
+  }*/ if (filter === "all") {
     students = await mentor.getStudents({
       include: [{ model: Score }],
     });

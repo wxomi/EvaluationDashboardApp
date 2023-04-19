@@ -10,7 +10,7 @@ const EditMarksModal = (props) => {
 
   const AssignButton = async () => {
     const response = await axios.patch(
-      `http://localhost:3000/api/v1/mentor/${props.mentorId}/student/${props.studentId}/score`,
+      `http://localhost:3001/api/v1/mentor/${props.mentorId}/student/${props.studentId}/score`,
       {
         ideationScore: inputVals.eval,
         executionScore: inputVals.exec,

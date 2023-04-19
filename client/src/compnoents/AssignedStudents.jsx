@@ -5,7 +5,7 @@ import axios from "axios";
 const AssignedStudents = () => {
   const updateComponent = () => {
     axios
-      .get(`http://localhost:3000/api/v1/mentor/2/students/all`)
+      .get(`http://localhost:3001/api/v1/mentor/2/students/all`)
       .then((response) => {
         setAssignedStudents(
           response.data.data.filter((item) => {
@@ -48,6 +48,7 @@ const AssignedStudents = () => {
           <div>{item.Score.IdeationScore}</div>
           <div>{item.Score.ExecutionScore}</div>
           <div>{item.Score.VivaPatchScore}</div>
+          <div>{item.Score.total}</div>
         </div>
       </>
     );

@@ -1,5 +1,6 @@
 const { Student, Score, Mentor } = require("../models/index");
 const { ClientError } = require("../utils/errors");
+const sendMail = require("../utils/mailer");
 
 const addScoreToStudent = async (mentorId, studentId, data) => {
   const mentor = await Mentor.findOne({
@@ -109,6 +110,13 @@ const finalSubmit = async (mentorId) => {
       explanation: "Mentor not found for the given mentorId",
     });
   }
+
+  if (mentor.finalSubmit) {
+    throw new ClientError({
+      message: "Already Submitted",
+      explanation: "Mentor already submitted all the marks",
+    });
+  }
   if (mentor.Students.length < 3) {
     throw new ClientError({
       message: "Assigned Students are less than 3",
@@ -116,6 +124,19 @@ const finalSubmit = async (mentorId) => {
         "Mentor can not lock the marks assigning marks to atleast 3 students",
     });
   }
+
+  const students = await mentor.getStudents({
+    include: [{ model: Score, where: { Submitted: true } }],
+  });
+  if (students.length != mentor.Students.length) {
+    throw new ClientError({
+      message: "Cannot lock",
+      explanation:
+        "Mentor can not lock the marks before giving marks to all the assigned students",
+    });
+  }
+
+  sendMail(mentor.Students);
   mentor.finalSubmit = true;
   await mentor.save();
 };
