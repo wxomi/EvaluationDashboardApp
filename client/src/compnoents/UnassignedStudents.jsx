@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import EditMarksModal from "./EditMarksModal";
 import axios from "axios";
 
-const UnassignedStudents = () => {
+const UnassignedStudents = (props) => {
   const updateComponent = () => {
     axios
-      .get(`http://localhost:3000/api/v1/mentor/2/students/all`)
+      .get(`http://localhost:3001/api/v1/mentor/${props.mentor}/students/all`)
       .then((response) => {
         setUnssignedStudents(
           response.data.data.filter((item) => {
@@ -16,6 +16,7 @@ const UnassignedStudents = () => {
   };
 
   useEffect(() => {
+    props.setSelected("uns");
     updateComponent();
   }, []);
 
@@ -43,7 +44,10 @@ const UnassignedStudents = () => {
             setCurrentStudent({ studdentId: item.id, mentorId: item.mentorId });
           }}
         >
-          <div>{item.name}</div>
+          <div className="card-top">Assign a score</div>
+          <div className="card-bottom card-bottom-uns">
+            <div className="card-top-uns">{item.name} {item.id}</div>
+          </div>
         </div>
       </>
     );
@@ -57,6 +61,7 @@ const UnassignedStudents = () => {
           studentId={currentStudent.studdentId}
           mentorId={currentStudent.mentorId}
           updateComponent={updateComponent}
+          post = {true}
         />
       )}
       {studentCards}

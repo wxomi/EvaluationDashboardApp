@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import EditMarksModal from "./EditMarksModal";
 import axios from "axios";
 
-const AssignedStudents = () => {
+const AssignedStudents = (props) => {
   const updateComponent = () => {
     axios
-      .get(`http://localhost:3001/api/v1/mentor/2/students/all`)
+      .get(`http://localhost:3001/api/v1/mentor/${props.mentor}/students/all`)
       .then((response) => {
         setAssignedStudents(
           response.data.data.filter((item) => {
@@ -16,8 +16,15 @@ const AssignedStudents = () => {
   };
 
   useEffect(() => {
+    props.setSelected("ass");
     updateComponent();
   }, []);
+
+  function lockAll(){
+    axios.post(`http://localhost:3001/api/v1/mentor/${props.mentor}/lock`).then((response)=>{
+
+    })
+  }
 
   const [assignedStudents, setAssignedStudents] = useState([]);
 
@@ -44,11 +51,13 @@ const AssignedStudents = () => {
             setCurrentStudent({ studdentId: item.id, mentorId: item.mentorId });
           }}
         >
-          <div>{item.name}</div>
-          <div>{item.Score.IdeationScore}</div>
-          <div>{item.Score.ExecutionScore}</div>
-          <div>{item.Score.VivaPatchScore}</div>
-          <div>{item.Score.total}</div>
+          <div className="card-top">{item.name} {item.id}</div>
+          <div className="card-bottom">
+            <div>IdeationScore: {item.Score.IdeationScore}</div>
+            <div>ExecutionScore: {item.Score.ExecutionScore}</div>
+            <div>VivaPatchScore: {item.Score.VivaPatchScore}</div>
+            <div>Total: {item.Score.total}</div>
+          </div>
         </div>
       </>
     );
@@ -62,9 +71,11 @@ const AssignedStudents = () => {
           studentId={currentStudent.studdentId}
           mentorId={currentStudent.mentorId}
           updateComponent={updateComponent}
+          post = {false}
         />
       )}
       {studentCards}
+      <button className="mentor-sel-button submit-all" onClick={lockAll}>Submit All</button>
     </div>
   );
 };

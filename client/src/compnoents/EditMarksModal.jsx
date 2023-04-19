@@ -9,16 +9,34 @@ const EditMarksModal = (props) => {
   });
 
   const AssignButton = async () => {
-    const response = await axios.patch(
-      `http://localhost:3001/api/v1/mentor/${props.mentorId}/student/${props.studentId}/score`,
-      {
-        ideationScore: inputVals.eval,
-        executionScore: inputVals.exec,
-        vivaPatchScore: inputVals.viva,
-      }
-    );
-    console.log(response);
-
+    let response;
+    if (props.post) {
+      response = await axios.post(
+        `http://localhost:3001/api/v1/mentor/${props.mentorId}/student/${props.studentId}/score`,
+        {
+          ideationScore: inputVals.eval,
+          executionScore: inputVals.exec,
+          vivaPatchScore: inputVals.viva,
+        }
+      );
+    } else {
+      response = await axios
+        .patch(
+          `http://localhost:3001/api/v1/mentor/${props.mentorId}/student/${props.studentId}/score`,
+          {
+            ideationScore: inputVals.eval,
+            executionScore: inputVals.exec,
+            vivaPatchScore: inputVals.viva,
+          }
+        )
+        .catch((err) => {
+          console.log(err.response.data);
+          document.getElementById("input-card").innerHTML = `<p style="padding:40px">${err.response.data.message}</p>`
+            
+          response = null;
+        });
+    }
+    if (response == null) return;
     props.closeModal();
     props.updateComponent();
   };
@@ -31,11 +49,11 @@ const EditMarksModal = (props) => {
 
   return (
     <div className="EditMarksModal">
-      {props.studentId}
+      {/* {props.studentId}
       <br />
-      {props.mentorId}
+      {props.mentorId} */}
       <div className="EditMarksModal-shadow" onClick={props.closeModal}></div>
-      <div className="input-card">
+      <div className="input-card" id="input-card">
         <input
           type="number"
           name="eval"

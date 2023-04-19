@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const AllStudents = () => {
+const AllStudents = (props) => {
   useEffect(() => {
-    axios
-      .get(`http://localhost:3000/api/v1/mentor/2/students/all`)
-      .then((response) => {
-        setAllStudents(response.data.data);
-      });
+    props.setSelected("all");
+    
   }, []);
 
-  const [allStudents, setAllStudents] = useState([]);
+  
 
   return (
     <div className="all-student-con">
-      {allStudents.map((item) => {
-        return <div>{item.name}</div>;
+      {props.allStudents.map((item) => {
+        return <div className="all-card">
+          <div>Student Name: {item.name}</div>
+          <div>Student Id: {item.id}</div>
+        </div>;
       })}
     </div>
   );

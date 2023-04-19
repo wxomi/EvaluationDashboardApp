@@ -52,7 +52,7 @@ const removeStudent = async (mentorId, studentId) => {
   }
   const score = await Score.findOne({ where: { StudentId: studentId } });
 
-  if (score && score.Submitted) {
+  if (mentor && mentor.finalSubmit) {
     throw new ClientError({
       message: "Cannot remove student.",
       explanation: "The student has a submitted score and cannot be removed.",

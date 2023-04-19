@@ -1,0 +1,82 @@
+import React, { useState } from "react";
+import AllStudents from "./AllStudents";
+import axios from "axios";
+
+const StudentAssign = (props) => {
+  const [inputData, setInputData] = useState(null);
+
+  function handleChange(event) {
+    setInputData(event.target.value);
+    console.log(inputData);
+  }
+
+  async function assign() {
+    await axios
+      .post(
+        `http://localhost:3001/api/v1/mentor/${props.mentor}/student/${inputData}`
+      )
+      .catch((err) => {
+        console.log(err.response.error);
+      });
+      console.log("here")
+      setInputData(null);
+  }
+
+  async function unassign() {
+    await axios
+      .delete(
+        `http://localhost:3001/api/v1/mentor/${props.mentor}/student/${inputData}`
+      )
+      .catch((err) => {
+        console.log(err.response.error);
+      });
+      console.log("here")
+
+      setInputData(null);
+  }
+
+  function getStudents(){
+    console.log("component Mount")
+    return(<AllStudents setSelected={props.setSelected} mentor={props.mentor} inputData={inputData} allStudents = {props.allStudents} setAllStudents = {props.setAllStudents}/> )
+  }
+
+  return (
+    <div className="student-assignmnet-con">
+      <div className="left">
+        <h1 style={{
+          margin: "30px"
+        }}>Assigned Students</h1>
+        {getStudents()}
+        
+      </div>
+      <div className="right">
+        <div className="stu-card input-card">
+          <input
+            type="number"
+            placeholder="Type you id here..."
+            onChange={(e) => {
+              handleChange(e);
+            }}
+          />
+          <button className="mentor-sel-button" onClick={() => {
+              assign();
+              setInputData(null);
+            }}>
+            Assign
+          </button>
+          <button
+            className="mentor-sel-button"
+            onClick={() => {
+              unassign();
+              setInputData(null);
+            }}
+          >
+            Unassign
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default StudentAssign;

@@ -2,17 +2,17 @@ import React, { useState } from 'react';
 import MentorSelect from './MentorSelect';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 
-const Homepage = () => {
+const Homepage = (props) => {
     const navigate = useNavigate();
-	const [mentor, setMentor] = useState(null);
+	
 
 	const verifyAndSet = (mentorId) => {
-		setMentor(mentorId);
+		props.setMentor(mentorId);
         navigate("/");
 	};
 
 	const resetMentor = () => {
-		setMentor(null);
+		props.setMentor(null);
         navigate('/');
 	};
 
@@ -24,7 +24,7 @@ const Homepage = () => {
 
 	return (
 		<div className="app">
-			{!mentor ? (
+			{!props.mentor ? (
 				<MentorSelect verifyAndSet={verifyAndSet} />
 			) : (
 				<div className="mentor-dash-con">
@@ -37,9 +37,9 @@ const Homepage = () => {
 								Assign Marks
 							</NavLink>
 						</div>
-						<div cl>
-							<p>Current mentor id: {mentor}</p>
-							<button onClick={resetMentor}>Change Mentor</button>
+						<div className='nav-extras'>
+							<p>Current mentor id: {props.mentor}</p>
+							<button onClick={resetMentor} className='mentor-sel-button change-mentor'>Change Mentor</button>
 						</div>
 					</div>
 
