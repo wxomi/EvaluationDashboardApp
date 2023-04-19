@@ -99,8 +99,14 @@ const getStudents = async (mentorId, filter) => {
   return students;
 };
 
+const getAllMentors = async () => {
+  const response = await Mentor.findAll();
+  return response;
+};
+
 module.exports = {
   addStudentToMentor,
   removeStudent,
   getStudents,
+  getAllMentors,
 };

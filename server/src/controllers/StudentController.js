@@ -72,8 +72,24 @@ const getStudent = async (req, res) => {
   }
 };
 
+const getAllMentors = async (req, res) => {
+  try {
+    const resposne = await studentService.getAllMentors();
+    return res.status(200).json({
+      message: "successfully fetched all the mentors",
+      data: resposne,
+    });
+  } catch (err) {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      error: err,
+      success: false,
+    });
+  }
+};
+
 module.exports = {
   addStudent,
   removeStudent,
   getStudent,
+  getAllMentors,
 };
