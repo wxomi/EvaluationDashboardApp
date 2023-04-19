@@ -13,14 +13,18 @@ function App() {
   const [mentor, setMentor] = useState(null);
   const [selected, setSelected] = useState("all");
   const [allStudents, setAllStudents] = useState([]);
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
     axios
       .get(`http://localhost:3001/api/v1/mentor/${mentor}/students/all`)
       .then((response) => {
+        console.log("response")
         setAllStudents(response.data.data);
       });
-  }, []);
+  }, [count]);
+
+  // console.log(allStudents)
 
   return (
     <BrowserRouter>
@@ -40,6 +44,8 @@ function App() {
                 setMentor={setMentor}
                 allStudents={allStudents}
                 setAllStudents={setAllStudents}
+                setCount = {setCount}
+                count = {count}
               />
             }
           />
@@ -61,6 +67,8 @@ function App() {
                   mentor={mentor}
                   allStudents={allStudents}
                   setAllStudents={setAllStudents}
+                  setCount = {setCount}
+                  count = {count}
                 />
               }
             />

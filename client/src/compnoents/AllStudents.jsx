@@ -4,10 +4,11 @@ import axios from "axios";
 const AllStudents = (props) => {
   useEffect(() => {
     props.setSelected("all");
-    
+    props.setCount((old)=>{
+      return old + 1;
+    })
   }, []);
 
-  
 
   return (
     <div className="all-student-con">
